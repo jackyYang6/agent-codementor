@@ -1,0 +1,27 @@
+{
+  "name": "agent-codementor",
+  "version": "0.1.0",
+  "description": "A source-code learning skill pack for coding agents like Claude Code and Codex.",
+  "type": "module",
+  "bin": {
+    "agent-codementor": "./bin/agent-codementor.js"
+  },
+  "scripts": {
+    "start": "node ./bin/agent-codementor.js",
+    "check": "node --check ./bin/agent-codementor.js"
+  },
+  "keywords": [
+    "claude-code",
+    "codex",
+    "agent",
+    "skills",
+    "source-code",
+    "code-review",
+    "refactor"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
