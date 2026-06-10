@@ -17,4 +17,4 @@ Use `/learn` mode and automatically choose one of:
 User input:
 $ARGUMENTS
 
-Do not explain code line by line. Focus on architecture, ownership, lifecycle, concurrency, memory, cache behavior, failure paths, and refactor risk.
+Start by naming the selected mode and why. Do not explain code line by line. Focus on architecture, ownership, lifecycle, concurrency, memory, cache behavior, failure paths, and refactor risk.

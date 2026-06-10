@@ -1,3 +1,9 @@
+---
+name: dataflow
+description: Trace request, cache, tensor, buffer, object, or task lifecycle across modules, ownership boundaries, sync points, and failure paths.
+argument-hint: "<scenario or target>"
+---
+
 # Skill: Dataflow Tracing
 
 Command: `/dataflow`
@@ -16,7 +22,9 @@ Build an end-to-end mental model of how data and state evolve across modules, ru
 4. **Ownership map**: explain who owns resources, who borrows views, who holds indices or handles, and who releases.
 5. **Runtime/language boundary**: if relevant, identify copies, pointers, FFI handles, CUDA stream sync, host-device transfer, or GIL/runtime boundaries.
 6. **Blocking/sync points**: explicitly mark locks, awaits, channel sends, barriers, allocation, host-device copies, and synchronizations.
-7. **Text panorama**: end with a compact arrow diagram.
+7. **Failure replay**: replay one realistic failure path and show cleanup or leak risk.
+8. **Test evidence**: point to the test, benchmark, or missing test that would validate the traced lifecycle.
+9. **Text panorama**: end with a compact arrow diagram.
 
 ## Hard Constraints
 

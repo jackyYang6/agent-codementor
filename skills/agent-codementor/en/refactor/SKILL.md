@@ -1,3 +1,9 @@
+---
+name: refactor
+description: Assess refactor risk before modifying a complex module, including blast radius, hidden contracts, tests, and observability.
+argument-hint: "<change idea or target>"
+---
+
 # Skill: Refactor Readiness
 
 Command: `/refactor`
@@ -16,7 +22,9 @@ Assess risk before code changes. Prefer minimal safe changes over broad rewrites
 4. **Minimal safe path**: propose the smallest change that preserves existing structures and rollback/cleanup paths.
 5. **Required tests**: happy path, extreme length, concurrent requests, cancellation, OOM/allocation failure, cache hit/miss, streaming final chunk, multi-device/worker, and performance regression.
 6. **Red lines**: clearly name logic that should not be touched lightly.
-7. **Final recommendation**: low risk, medium risk with tests, use adapter first, or avoid unless lifecycle is redesigned.
+7. **Learning value**: explain which subsystem contract the user should understand before editing.
+8. **Instrumentation check**: identify logs, metrics, traces, counters, or benchmarks that would show the change is behaving correctly.
+9. **Final recommendation**: low risk, medium risk with tests, use adapter first, or avoid unless lifecycle is redesigned.
 
 ## Hard Constraints
 

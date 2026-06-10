@@ -6,6 +6,15 @@
   "bin": {
     "agent-codementor": "./bin/agent-codementor.js"
   },
+  "files": [
+    "AGENTS.md",
+    "README.md",
+    "LICENSE",
+    "bin/",
+    "skills/",
+    "commands/",
+    "targets/"
+  ],
   "scripts": {
     "start": "node ./bin/agent-codementor.js",
     "check": "node --check ./bin/agent-codementor.js"

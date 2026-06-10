@@ -1,3 +1,9 @@
+---
+name: interview
+description: Ask hard boundary questions that test source-code mastery of lifecycle, state transitions, failures, and trade-offs.
+argument-hint: "<target module, file, or subsystem>"
+---
+
 # Skill: Boundary Interview
 
 Command: `/interview`
@@ -29,6 +35,7 @@ After the user answers, grade with:
 4. The real disaster path.
 5. Source locations to verify.
 6. Corrected answer.
+7. One follow-up reading task that starts from a specific function, class, or test.
 
 ## Hard Constraints
 
