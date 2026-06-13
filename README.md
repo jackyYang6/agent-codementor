@@ -7,8 +7,10 @@ Agent CodeMentor is a source-code learning skill pack that turns coding agents l
 Install one or more supported targets into the current repository:
 
 ```bash
-npx agent-codementor init
+npx github:jackyYang6/agent-codementor init
 ```
+
+This repository is not published to the npm registry yet, so the install command uses the GitHub package spec. After an npm publish, the shorter `npx agent-codementor init` form can be used.
 
 Without a target flag, `init` asks which environments to install:
 
@@ -23,32 +25,32 @@ Enter numbers separated by comma (default: 1):
 Claude Code only:
 
 ```bash
-npx agent-codementor init --claude
+npx github:jackyYang6/agent-codementor init --claude
 ```
 
 Codex only:
 
 ```bash
-npx agent-codementor init --codex
+npx github:jackyYang6/agent-codementor init --codex
 ```
 
 Antigravity only:
 
 ```bash
-npx agent-codementor init --antigravity
+npx github:jackyYang6/agent-codementor init --antigravity
 ```
 
 All supported targets:
 
 ```bash
-npx agent-codementor init --all
+npx github:jackyYang6/agent-codementor init --all
 ```
 
 Choose generated skill language:
 
 ```bash
-npx agent-codementor init --lang en
-npx agent-codementor init --lang zh
+npx github:jackyYang6/agent-codementor init --lang en
+npx github:jackyYang6/agent-codementor init --lang zh
 ```
 
 If `--lang` is omitted, `init` asks:
@@ -63,7 +65,7 @@ Select language (1 or 2, default: 1):
 Check installation:
 
 ```bash
-npx agent-codementor doctor
+npx github:jackyYang6/agent-codementor doctor
 ```
 
 ## Repository Layout
