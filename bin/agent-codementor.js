@@ -2,6 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { emitKeypressEvents } from 'node:readline';
 import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -11,13 +12,13 @@ const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 const skillName = 'agent-codementor';
 const supportedLangs = new Set(['en', 'zh']);
 const modeSkills = [
-  'learn',
-  'socratic',
-  'hypothesis',
-  'inversion',
-  'dataflow',
-  'interview',
-  'refactor'
+  'acm-learn',
+  'acm-socratic',
+  'acm-hypothesis',
+  'acm-inversion',
+  'acm-dataflow',
+  'acm-interview',
+  'acm-refactor'
 ];
 
 const targets = {
@@ -127,14 +128,14 @@ function install(selectedTargets, lang, force) {
   if (selectedTargets.antigravity) installAntigravity(lang, force);
 
   console.log('\nAgent CodeMentor installed.');
-  if (selectedTargets.claude) console.log('Claude Code: .claude/skills/{learn,socratic,hypothesis,inversion,dataflow,interview,refactor} + .claude/commands');
-  if (selectedTargets.codex) console.log('Codex: .agents/skills/{learn,socratic,hypothesis,inversion,dataflow,interview,refactor} + AGENTS.md');
-  if (selectedTargets.antigravity) console.log('Antigravity: .agent/skills/{learn,socratic,hypothesis,inversion,dataflow,interview,refactor}');
+  if (selectedTargets.claude) console.log('Claude Code: .claude/skills/acm-* + .claude/commands/acm-*.md');
+  if (selectedTargets.codex) console.log('Codex: .agents/skills/acm-* + AGENTS.md');
+  if (selectedTargets.antigravity) console.log('Antigravity: .agent/skills/acm-*');
 }
 
 function doctor() {
   const checks = [
-    '.claude/commands/learn.md',
+    '.claude/commands/acm-learn.md',
     'AGENTS.md'
   ];
   for (const mode of modeSkills) {
@@ -164,7 +165,97 @@ function parseTargetSelection(value) {
   return Object.values(selected).some(Boolean) ? selected : undefined;
 }
 
+function clearRenderedLines(count) {
+  output.write(`\x1b[${count}A`);
+  for (let i = 0; i < count; i += 1) {
+    output.write('\x1b[2K');
+    if (i < count - 1) output.write('\x1b[1B');
+  }
+  if (count > 1) output.write(`\x1b[${count - 1}A`);
+  output.write('\r');
+}
+
+async function promptCheckbox(title, entries, defaultSelectedKeys) {
+  if (!input.isTTY || !output.isTTY || typeof input.setRawMode !== 'function') {
+    return undefined;
+  }
+
+  emitKeypressEvents(input);
+  const selected = new Set(defaultSelectedKeys);
+  let cursor = 0;
+  let renderedLines = 0;
+  let warning = '';
+
+  function render() {
+    if (renderedLines > 0) clearRenderedLines(renderedLines);
+    const lines = [
+      title,
+      ...entries.map((entry, index) => {
+        const pointer = index === cursor ? '›' : ' ';
+        const mark = selected.has(entry.key) ? '✓' : ' ';
+        return `${pointer} [${mark}] ${entry.description}`;
+      }),
+      warning || 'Use ↑/↓ to move, space to toggle, enter to confirm.'
+    ];
+    output.write(`${lines.join('\n')}\n`);
+    renderedLines = lines.length;
+  }
+
+  return new Promise((resolve) => {
+    const wasRaw = input.isRaw;
+
+    function cleanup(value) {
+      input.off('keypress', onKeypress);
+      input.setRawMode(wasRaw);
+      input.pause();
+      output.write('\x1b[?25h');
+      resolve(value);
+    }
+
+    function onKeypress(_str, key) {
+      warning = '';
+      if (key.name === 'up') {
+        cursor = (cursor - 1 + entries.length) % entries.length;
+      } else if (key.name === 'down') {
+        cursor = (cursor + 1) % entries.length;
+      } else if (key.name === 'space') {
+        const keyName = entries[cursor].key;
+        if (selected.has(keyName)) selected.delete(keyName);
+        else selected.add(keyName);
+      } else if (key.name === 'return') {
+        if (selected.size === 0) {
+          warning = 'Select at least one target.';
+        } else {
+          clearRenderedLines(renderedLines);
+          cleanup(Object.fromEntries(entries.map((entry) => [entry.key, selected.has(entry.key)])));
+          return;
+        }
+      } else if (key.name === 'c' && key.ctrl) {
+        clearRenderedLines(renderedLines);
+        cleanup(undefined);
+        process.exitCode = 130;
+        return;
+      }
+      render();
+    }
+
+    output.write('\x1b[?25l');
+    input.setRawMode(true);
+    input.resume();
+    input.on('keypress', onKeypress);
+    render();
+  });
+}
+
 async function promptForTargets() {
+  const checkboxResult = await promptCheckbox(
+    '? Install targets:',
+    Object.entries(targets).map(([key, config]) => ({ key, description: config.description })),
+    ['claude']
+  );
+  if (checkboxResult) return checkboxResult;
+  if (process.exitCode === 130) return undefined;
+
   const rl = readline.createInterface({ input, output });
   try {
     console.log('? Install targets:');

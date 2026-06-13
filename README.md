@@ -16,10 +16,10 @@ Without a target flag, `init` asks which environments to install:
 
 ```text
 ? Install targets:
-  1) Claude Code (.claude/skills + .claude/commands)
-  2) Codex (.agents/skills + AGENTS.md)
-  3) Antigravity (.agent/skills)
-Enter numbers separated by comma (default: 1):
+› [✓] Claude Code (.claude/skills + .claude/commands)
+  [ ] Codex (.agents/skills + AGENTS.md)
+  [ ] Antigravity (.agent/skills)
+Use ↑/↓ to move, space to toggle, enter to confirm.
 ```
 
 Claude Code only:
@@ -73,57 +73,57 @@ npx github:jackyYang6/agent-codementor doctor
 The canonical skill sources are plain markdown files:
 
 ```text
-skills/agent-codementor/en/learn/SKILL.md
-skills/agent-codementor/en/socratic/SKILL.md
-skills/agent-codementor/en/hypothesis/SKILL.md
-skills/agent-codementor/en/inversion/SKILL.md
-skills/agent-codementor/en/dataflow/SKILL.md
-skills/agent-codementor/en/interview/SKILL.md
-skills/agent-codementor/en/refactor/SKILL.md
-skills/agent-codementor/zh/<same-stage>/SKILL.md
+skills/agent-codementor/en/acm-learn/SKILL.md
+skills/agent-codementor/en/acm-socratic/SKILL.md
+skills/agent-codementor/en/acm-hypothesis/SKILL.md
+skills/agent-codementor/en/acm-inversion/SKILL.md
+skills/agent-codementor/en/acm-dataflow/SKILL.md
+skills/agent-codementor/en/acm-interview/SKILL.md
+skills/agent-codementor/en/acm-refactor/SKILL.md
+skills/agent-codementor/zh/acm-<stage>/SKILL.md
 commands/claude/*.md
 targets/codex/AGENTS.md
 ```
 
-The CLI does not generate the skill body from JavaScript strings. It copies the selected language's stage skill directories into each agent's expected project-level location, so `/learn`, `/socratic`, `/hypothesis`, `/inversion`, `/dataflow`, `/interview`, and `/refactor` are separate skills.
+The CLI does not generate the skill body from JavaScript strings. It copies the selected language's stage skill directories into each agent's expected project-level location, so `/acm-learn`, `/acm-socratic`, `/acm-hypothesis`, `/acm-inversion`, `/acm-dataflow`, `/acm-interview`, and `/acm-refactor` are separate skills.
 
 ## Daily Usage
 
 Use one short command instead of long prompts:
 
 ```text
-/socratic @src/runtime.rs
+/acm-socratic @src/runtime.rs
 ```
 
 ```text
-/hypothesis I think prefix cache hit means no new KV blocks are allocated. Critique this.
+/acm-hypothesis I think prefix cache hit means no new KV blocks are allocated. Critique this.
 ```
 
 ```text
-/inversion Why does this block manager use refcount instead of copying?
+/acm-inversion Why does this block manager use refcount instead of copying?
 ```
 
 ```text
-/dataflow Trace a streaming request from router to final usage response.
+/acm-dataflow Trace a streaming request from router to final usage response.
 ```
 
 ```text
-/interview @src/prefix_cache.rs
+/acm-interview @src/prefix_cache.rs
 ```
 
 ```text
-/refactor I want to replace prefix cache with a radix tree. Review the risk first.
+/acm-refactor I want to replace prefix cache with a radix tree. Review the risk first.
 ```
 
 ## Skills
 
-- `/learn`: automatically select the best learning mode.
-- `/socratic`: guided onboarding for unfamiliar modules.
-- `/hypothesis`: critique the user's mental model and expose edge cases.
-- `/inversion`: explain why the design is shaped this way instead of a simpler way.
-- `/dataflow`: trace end-to-end object, request, cache, tensor, or buffer lifecycle.
-- `/interview`: ask hard boundary questions and wait for the user's answer before grading.
-- `/refactor`: assess risk before changing complex modules.
+- `/acm-learn`: automatically select the best learning mode.
+- `/acm-socratic`: guided onboarding for unfamiliar modules.
+- `/acm-hypothesis`: critique the user's mental model and expose edge cases.
+- `/acm-inversion`: explain why the design is shaped this way instead of a simpler way.
+- `/acm-dataflow`: trace end-to-end object, request, cache, tensor, or buffer lifecycle.
+- `/acm-interview`: ask hard boundary questions and wait for the user's answer before grading.
+- `/acm-refactor`: assess risk before changing complex modules.
 
 Each skill is tuned to classify the target subsystem first, then anchor explanations to source evidence, failure paths, invariants, tests, and observability signals.
 
@@ -132,45 +132,45 @@ Each skill is tuned to classify the target subsystem first, then anchor explanat
 For Claude Code:
 
 ```text
-.claude/skills/learn/SKILL.md
-.claude/skills/socratic/SKILL.md
-.claude/skills/hypothesis/SKILL.md
-.claude/skills/inversion/SKILL.md
-.claude/skills/dataflow/SKILL.md
-.claude/skills/interview/SKILL.md
-.claude/skills/refactor/SKILL.md
-.claude/commands/learn.md
-.claude/commands/socratic.md
-.claude/commands/hypothesis.md
-.claude/commands/inversion.md
-.claude/commands/dataflow.md
-.claude/commands/interview.md
-.claude/commands/refactor.md
+.claude/skills/acm-learn/SKILL.md
+.claude/skills/acm-socratic/SKILL.md
+.claude/skills/acm-hypothesis/SKILL.md
+.claude/skills/acm-inversion/SKILL.md
+.claude/skills/acm-dataflow/SKILL.md
+.claude/skills/acm-interview/SKILL.md
+.claude/skills/acm-refactor/SKILL.md
+.claude/commands/acm-learn.md
+.claude/commands/acm-socratic.md
+.claude/commands/acm-hypothesis.md
+.claude/commands/acm-inversion.md
+.claude/commands/acm-dataflow.md
+.claude/commands/acm-interview.md
+.claude/commands/acm-refactor.md
 ```
 
 For Codex-style project guidance:
 
 ```text
 AGENTS.md
-.agents/skills/learn/SKILL.md
-.agents/skills/socratic/SKILL.md
-.agents/skills/hypothesis/SKILL.md
-.agents/skills/inversion/SKILL.md
-.agents/skills/dataflow/SKILL.md
-.agents/skills/interview/SKILL.md
-.agents/skills/refactor/SKILL.md
+.agents/skills/acm-learn/SKILL.md
+.agents/skills/acm-socratic/SKILL.md
+.agents/skills/acm-hypothesis/SKILL.md
+.agents/skills/acm-inversion/SKILL.md
+.agents/skills/acm-dataflow/SKILL.md
+.agents/skills/acm-interview/SKILL.md
+.agents/skills/acm-refactor/SKILL.md
 ```
 
 For Antigravity:
 
 ```text
-.agent/skills/learn/SKILL.md
-.agent/skills/socratic/SKILL.md
-.agent/skills/hypothesis/SKILL.md
-.agent/skills/inversion/SKILL.md
-.agent/skills/dataflow/SKILL.md
-.agent/skills/interview/SKILL.md
-.agent/skills/refactor/SKILL.md
+.agent/skills/acm-learn/SKILL.md
+.agent/skills/acm-socratic/SKILL.md
+.agent/skills/acm-hypothesis/SKILL.md
+.agent/skills/acm-inversion/SKILL.md
+.agent/skills/acm-dataflow/SKILL.md
+.agent/skills/acm-interview/SKILL.md
+.agent/skills/acm-refactor/SKILL.md
 ```
 
 ## Philosophy
